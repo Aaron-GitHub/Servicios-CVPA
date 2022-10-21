@@ -5,6 +5,7 @@ import {
   REGISTRAR,
   ACTUALIZAR,
   ELIMINAR,
+  OBTENER_CALENDARIO_LISTA,
 } from "../../../const/actionTypes";
 import {
   getList,
@@ -28,6 +29,7 @@ export const PacienteContextProvider = (props) => {
   const initialState = {
     pacienteList: [],
     pacienteActual: null,
+    pacienteCalendarioList: [],
   };
 
   const [state, dispatch] = useReducer(pacienteReducer, initialState);
@@ -39,6 +41,23 @@ export const PacienteContextProvider = (props) => {
       if (resultado && resultado.data) {
         dispatch({
           type: OBTENER_LISTA,
+          payload: resultado.data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /* OBETENER LISTADO DE Calendatio de pacienteS */
+  const obtenerCalendarioPacienteList = async (paciente) => {
+    try {
+      const resultado = await callEndpoint(
+        getList("calendario/" + urlApi + "/" + paciente.id)
+      );
+      if (resultado && resultado.data) {
+        dispatch({
+          type: OBTENER_CALENDARIO_LISTA,
           payload: resultado.data,
         });
       }
@@ -131,12 +150,14 @@ export const PacienteContextProvider = (props) => {
       value={{
         pacienteList: state.pacienteList,
         pacienteActual: state.pacienteActual,
+        pacienteCalendarioList: state.pacienteCalendarioList,
 
         obtenerPacienteList,
         obtenerPaciente,
         registrarPaciente,
         actualizarPaciente,
         eliminarPaciente,
+        obtenerCalendarioPacienteList,
       }}>
       {props.children}
     </PacienteContext.Provider>

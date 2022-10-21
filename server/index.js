@@ -9,7 +9,7 @@ const userRoute =  require("./routes/users");
 const profesionRoute =  require("./routes/profesion");
 const pacienteRoute =  require("./routes/pacient");
 
-const PUERTO = process.env.PORT || 5000;
+const PUERTO = process.env.PORT || 3001;
 
 //middleware
 app.use(express.json());

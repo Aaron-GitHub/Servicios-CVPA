@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PacienteContext } from "../context/pacienteContext";
+import { FormatoFecha } from "../../../utilities/Utiles";
 
 const VistaPaciente = () => {
   const pacienteDefault = useMemo(() => {
@@ -20,15 +21,24 @@ const VistaPaciente = () => {
     };
   }, []);
 
-  const { obtenerPaciente, pacienteActual } = useContext(PacienteContext);
+  const today = new Date().toISOString();
+
+  const {
+    obtenerPaciente,
+    pacienteActual,
+    obtenerCalendarioPacienteList,
+    pacienteCalendarioList,
+  } = useContext(PacienteContext);
   const navigate = useNavigate();
 
   const [paciente, setPaciente] = useState(pacienteDefault);
 
   useEffect(() => {
-    pacienteActual !== null
-      ? setPaciente(pacienteActual)
-      : setPaciente(pacienteDefault);
+    console.log(today);
+    if (pacienteActual !== null) {
+      obtenerCalendarioPacienteList(pacienteActual);
+      setPaciente(pacienteActual);
+    } else setPaciente(pacienteDefault);
   }, [pacienteActual, pacienteDefault]);
 
   const limpiaForm = () => {
@@ -77,7 +87,17 @@ const VistaPaciente = () => {
                 role="tab"
                 aria-controls="v-visitas"
                 aria-selected="false">
-                Visitas
+                Visitas futuras
+              </a>
+              <a
+                className="nav-link"
+                id="visitas_futuras"
+                data-bs-toggle="pill"
+                href="#v-visitas_futuras"
+                role="tab"
+                aria-controls="v-visitas_futuras"
+                aria-selected="false">
+                Visitas pasadas
               </a>
             </div>
           </div>
@@ -180,8 +200,57 @@ const VistaPaciente = () => {
                 id="v-visitas"
                 role="tabpanel"
                 aria-labelledby="visitas">
-                Comentarios realizados por los profesionales despues de cada
-                visita
+                <div className="list-group">
+                  {pacienteCalendarioList.map((element) =>
+                    element.start > today ? (
+                      <span
+                        key={element.id}
+                        className={`list-group-item list-group-item-action`}>
+                        <div className="d-flex w-100 justify-content-between">
+                          <h5 className="mb-1">{element.title}</h5>
+                          <small>
+                            visita de <b>{element.nombre_profesion}</b>
+                          </small>
+                        </div>
+                        <p className="mb-1">{element.descripcion}</p>
+                        <small className={`badge bg-light-info`}>
+                          {FormatoFecha(element.start)}
+                        </small>
+                      </span>
+                    ) : (
+                      ""
+                    )
+                  )}
+                </div>
+              </div>
+
+              <div
+                className="tab-pane fade"
+                id="v-visitas_futuras"
+                role="tabpanel"
+                aria-labelledby="visitas_futuras">
+                <div className="list-group">
+                  {pacienteCalendarioList.map((element) =>
+                    element.start < today ? (
+                      <span
+                        key={element.id}
+                        className={`list-group-item list-group-item-action list-group-item list-group-item-dark`}>
+                        <div className="d-flex w-100 justify-content-between">
+                          <h5 className="mb-1">{element.title}</h5>
+                          <small>
+                            visita de <b>{element.nombre_profesion}</b>
+                          </small>
+                        </div>
+                        <p className="mb-1">{element.descripcion}</p>
+                        <small className={`badge bg-light-danger`}>
+                          {FormatoFecha(element.start)}
+                        </small>
+                      </span>
+                    ) : (
+                      ""
+                    )
+                  )}
+                </div>
               </div>
             </div>
           </div>

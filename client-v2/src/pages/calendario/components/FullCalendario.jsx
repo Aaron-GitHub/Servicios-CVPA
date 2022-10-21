@@ -7,8 +7,10 @@ import listPlugin from "@fullcalendar/list";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { CalendarioContext } from "../context/calendarioContext";
 import { formatDate } from "../../../utilities/Utiles";
+import { SelectsContext } from "../../../context/SelectsContext";
 
 const FullCalendario = () => {
+  const { obtenerProfesiones, obtenerPacientes } = useContext(SelectsContext);
   const calendarioDefault = useMemo(() => {
     return {
       id: 0,
@@ -17,6 +19,10 @@ const FullCalendario = () => {
       end: "",
       descripcion: "",
       color: "",
+      id_profesion: 0,
+      profesion: "",
+      id_paciente: 0,
+      paciente: "",
       activo: true,
     };
   }, []);
@@ -25,6 +31,12 @@ const FullCalendario = () => {
 
   const { obtenerCalendarioList, calendarioList, newCalendario } =
     useContext(CalendarioContext);
+
+  useEffect(() => {
+    obtenerCalendarioList();
+    obtenerProfesiones();
+    obtenerPacientes();
+  }, []);
 
   const handleSelect = (info) => {
     const { start, end } = info;
@@ -39,9 +51,28 @@ const FullCalendario = () => {
     close.click();
   };
 
-  useEffect(() => {
-    obtenerCalendarioList();
-  }, []);
+  const handleEventSelect = (info) => {
+    console.log(info);
+    const { publicId } = info._def;
+    const { start, end, title, backgroundColor } = info;
+    const { descripcion, id_profesion, id_paciente } = info.extendedProps;
+
+    let calendarioTmp = { ...newCalendar };
+
+    calendarioTmp.id = publicId;
+    calendarioTmp.start = formatDate(start);
+    calendarioTmp.end = formatDate(end);
+    calendarioTmp.title = title;
+    calendarioTmp.descripcion = descripcion;
+    calendarioTmp.color = backgroundColor;
+    calendarioTmp.id_profesion = id_profesion;
+    calendarioTmp.id_paciente = id_paciente;
+
+    newCalendario(calendarioTmp);
+
+    let close = document.querySelector("#agendar-new");
+    close.click();
+  };
 
   return (
     <>
@@ -52,7 +83,8 @@ const FullCalendario = () => {
         dateClick={(e) => console.log(e.dateStr)}
         events={calendarioList}
         editable={true}
-        eventClick={(e) => console.log(e.event.id)}
+        eventClick={(e) => handleEventSelect(e.event)}
+        firstDay={1}
         headerToolbar={{
           start: "today prev next",
           center: "title",

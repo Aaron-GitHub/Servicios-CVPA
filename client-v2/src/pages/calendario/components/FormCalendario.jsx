@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Buttons, InputText } from "../../../components";
+import { SelectPaciente, SelectProfesion } from "../../../components";
 import { closeModal } from "../../../utilities/Utiles";
 import { CalendarioContext } from "../context/calendarioContext";
 
@@ -19,6 +20,10 @@ const FormCalendario = () => {
       end: "",
       descripcion: "",
       color: "",
+      id_profesion: 0,
+      nombre_profesion: "",
+      id_paciente: 0,
+      nombre_paciente: "",
       activo: true,
     };
   }, []);
@@ -67,6 +72,32 @@ const FormCalendario = () => {
               required={true}
               onChangeFN={handleChange}
               value={calendario.title}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6 col-12">
+          <div className="form-group">
+            <SelectProfesion
+              id="id_profesion"
+              name="id_profesion"
+              label="Profesión"
+              required={true}
+              onChange={handleChange}
+              value={calendario.id_profesion}
+            />
+          </div>
+        </div>
+        <div className="col-md-6 col-12">
+          <div className="form-group">
+            <SelectPaciente
+              id="id_ppaciente"
+              name="id_paciente"
+              label="Paciente"
+              required={true}
+              onChange={handleChange}
+              value={calendario.id_paciente}
             />
           </div>
         </div>

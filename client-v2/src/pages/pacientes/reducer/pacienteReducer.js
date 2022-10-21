@@ -1,4 +1,4 @@
-import { OBTENER_LISTA, REGISTRAR, OBTENER, ACTUALIZAR, ELIMINAR} from '../../../const/actionTypes';
+import { OBTENER_LISTA, REGISTRAR, OBTENER, ACTUALIZAR, ELIMINAR, OBTENER_CALENDARIO_LISTA} from '../../../const/actionTypes';
 
 export default (state, action) => {
     
@@ -7,6 +7,11 @@ export default (state, action) => {
             return {
                 ...state,
                 pacienteList: action.payload
+            };
+        case OBTENER_CALENDARIO_LISTA:
+            return {
+                ...state,
+                pacienteCalendarioList: action.payload
             };
         case REGISTRAR:
             return {

@@ -1,4 +1,4 @@
-import { OBTENER_LISTA_PROFESIONES} from '../const/actionTypes';
+import { OBTENER_LISTA_PROFESIONES, OBTENER_LISTA_PACIENTES} from '../const/actionTypes';
 
 export default (state, action) => {
     
@@ -8,7 +8,12 @@ export default (state, action) => {
                 ...state,
                 profesionesList: action.payload
             };
-        
+            
+        case OBTENER_LISTA_PACIENTES:
+            return {
+                ...state,
+                pacientesList: action.payload
+            };
         default:
             return state;
     }

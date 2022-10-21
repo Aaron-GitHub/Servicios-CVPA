@@ -12,3 +12,6 @@ export { default as Sidebar } from "./Theme/Sidebar";
 export { default as Buttons } from "./forms/Buttons";
 export { default as InputText } from "./forms/InputText";
 export { default as Checkbox } from "./forms/Checkbox";
+
+export { default as SelectProfesion } from "./selects/SelectProfesion";
+export { default as SelectPaciente } from "./selects/SelectPaciente";

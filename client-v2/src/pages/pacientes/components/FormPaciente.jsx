@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { Buttons, Checkbox, Header, InputText } from "../../../components";
+import { Buttons, InputText } from "../../../components";
 import { PacienteContext } from "../context/pacienteContext";
 import SelectProfesion from "../../../components/selects/SelectProfesion";
 import { useNavigate, useParams } from "react-router-dom";

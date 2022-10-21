@@ -45,7 +45,7 @@ const Login = () => {
 
             {window.location.search === "?forbiden" ? (
               <div className="alert alert-light-danger color-danger alert-dismissible show fade">
-                <i className="bi bi-exclamation-circle"></i> Usuario o
+                <i className="bi bi-exclamation-circle"></i> Usuario y/o
                 contraseña incorrectos.
                 <button
                   type="button"
