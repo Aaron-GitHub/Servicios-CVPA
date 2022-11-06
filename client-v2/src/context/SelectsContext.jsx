@@ -45,7 +45,8 @@ export const SelectsContextProvider = (props) => {
       if (resultado && resultado.data) {
         let pacentesActivos = [];
         resultado.data.forEach((item) => {
-          item.activo && pacentesActivos.push(item);
+          console.log(item);
+          if (item.activo === true) pacentesActivos.push(item);
         });
 
         dispatch({

@@ -11,6 +11,7 @@ import {
 import FormPaciente from "../pages/pacientes/components/FormPaciente";
 import TablaPaciente from "../pages/pacientes/components/TablaPaciente";
 import VistaPaciente from "../pages/pacientes/components/VistaPaciente";
+import SeguimientoPaciente from "../pages/pacientes/components/SeguimientoPaciente";
 
 const Rutas = () => {
   return (
@@ -30,6 +31,9 @@ const Rutas = () => {
           <Route path="nuevo" element={<FormPaciente />}></Route>
           <Route path=":id" element={<FormPaciente />}></Route>
           <Route path="ver/:id" element={<VistaPaciente />}></Route>
+          <Route
+            path="seguimiento/:id"
+            element={<SeguimientoPaciente />}></Route>
         </Route>
 
         <Route path="/profesion" element={<Profesion />}></Route>

@@ -26,39 +26,29 @@ const FullCalendario = () => {
       activo: true,
     };
   }, []);
-
   const [newCalendar, SetNewCalendar] = useState(calendarioDefault);
-
   const { obtenerCalendarioList, calendarioList, newCalendario } =
     useContext(CalendarioContext);
-
   useEffect(() => {
     obtenerCalendarioList();
     obtenerProfesiones();
     obtenerPacientes();
   }, []);
-
   const handleSelect = (info) => {
     const { start, end } = info;
-
     let calendarioTmp = { ...newCalendar };
     calendarioTmp.start = formatDate(start);
     calendarioTmp.end = formatDate(end);
-
     newCalendario(calendarioTmp);
-
     let close = document.querySelector("#agendar-new");
     close.click();
   };
-
   const handleEventSelect = (info) => {
     console.log(info);
     const { publicId } = info._def;
     const { start, end, title, backgroundColor } = info;
     const { descripcion, id_profesion, id_paciente } = info.extendedProps;
-
     let calendarioTmp = { ...newCalendar };
-
     calendarioTmp.id = publicId;
     calendarioTmp.start = formatDate(start);
     calendarioTmp.end = formatDate(end);
@@ -67,13 +57,10 @@ const FullCalendario = () => {
     calendarioTmp.color = backgroundColor;
     calendarioTmp.id_profesion = id_profesion;
     calendarioTmp.id_paciente = id_paciente;
-
     newCalendario(calendarioTmp);
-
     let close = document.querySelector("#agendar-new");
     close.click();
   };
-
   return (
     <>
       <FullCalendar
@@ -102,5 +89,4 @@ const FullCalendario = () => {
     </>
   );
 };
-
 export default FullCalendario;

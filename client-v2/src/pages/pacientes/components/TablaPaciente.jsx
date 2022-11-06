@@ -24,6 +24,11 @@ const TablaPaciente = () => {
     navigate("ver/" + props.id);
   };
 
+  const seguimientoPaciente = (props) => {
+    obtenerPaciente(props);
+    navigate("seguimiento/" + props.id);
+  };
+
   useEffect(() => {
     obtenerPacienteList();
     obtenerProfesiones();
@@ -53,6 +58,11 @@ const TablaPaciente = () => {
             ver={true}
             FnVer={() => verPaciente(props)}
             nombreform="paciente"
+          />
+          <OpcionesTabla
+            seguimiento={true}
+            FnSeguimiento={() => seguimientoPaciente(props)}
+            nombreform="seguimiento"
           />
         </>
       ),

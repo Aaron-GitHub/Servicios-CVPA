@@ -35,12 +35,12 @@ const Sidebar = () => {
     //
   };
 
-  function PerfectScrollbar() {
+  /*function PerfectScrollbar() {
     const container = document.querySelector(".sidebar-wrapper");
     const ps = new PerfectScrollbar(container, {
       wheelPropagation: false,
     });
-  }
+  }*/
 
   window.addEventListener("DOMContentLoaded", (event) => {
     ocultaSideBar();
@@ -69,7 +69,7 @@ const Sidebar = () => {
             </div>
             <div className="toggler">
               <a
-                href="#"
+                href="..."
                 className="sidebar-hide d-xl-none d-block"
                 onClick={() =>
                   document.getElementById("sidebar").classList.toggle("active")
@@ -112,7 +112,6 @@ const Sidebar = () => {
                 <span>Calendario</span>
               </Link>
             </li>
-
             <li className="sidebar-item has-sub" id="components">
               <Link
                 className="sidebar-link"

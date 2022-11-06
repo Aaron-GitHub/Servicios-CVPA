@@ -2,8 +2,10 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PacienteContext } from "../context/pacienteContext";
 import { FormatoFecha } from "../../../utilities/Utiles";
+import { Buttons, Checkbox, InputText, Modal } from "../../../components";
+import FormSeguimiento from "./FormSeguimiento";
 
-const VistaPaciente = () => {
+const SeguimientoPaciente = () => {
   const pacienteDefault = useMemo(() => {
     return {
       id: 0,
@@ -42,7 +44,15 @@ const VistaPaciente = () => {
     // eslint-disable-next-line
   }, [pacienteActual, pacienteDefault]);
 
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+  };
+
   const limpiaForm = () => {
+    obtenerPaciente(null);
+  };
+
+  const volver = () => {
     obtenerPaciente(null);
     navigate("/pacientes");
   };
@@ -50,7 +60,10 @@ const VistaPaciente = () => {
   return (
     <div className="card">
       <div className="card-header">
-        <h4 className="card-title">Ficha de paciente (PCVPA-{paciente.id})</h4>
+        <h4 className="card-title">
+          Seguimiento de visitas paciente (PCVPA-{paciente.id} -{" "}
+          {paciente.nombres + " " + paciente.apellido_paterno})
+        </h4>
       </div>
       <div className="card-body">
         <div className="row">
@@ -62,33 +75,13 @@ const VistaPaciente = () => {
               aria-orientation="vertical">
               <a
                 className="nav-link active"
-                id="perfil"
-                data-bs-toggle="pill"
-                href="#v-perfil"
-                role="tab"
-                aria-controls="v-perfil"
-                aria-selected="true">
-                Perfil
-              </a>
-              <a
-                className="nav-link"
-                id="consulta"
-                data-bs-toggle="pill"
-                href="#v-consulta"
-                role="tab"
-                aria-controls="v-consulta"
-                aria-selected="false">
-                Motivo Consulta
-              </a>
-              <a
-                className="nav-link"
                 id="visitas"
                 data-bs-toggle="pill"
                 href="#v-visitas"
                 role="tab"
                 aria-controls="v-visitas"
                 aria-selected="false">
-                Visitas futuras
+                Visitas
               </a>
               <a
                 className="nav-link"
@@ -106,98 +99,6 @@ const VistaPaciente = () => {
             <div className="tab-content" id="v-fichaContent">
               <div
                 className="tab-pane fade show active"
-                id="v-perfil"
-                role="tabpanel"
-                aria-labelledby="perfil">
-                <div className="table-responsive">
-                  <table className="table table-borderless table-light mb-0">
-                    <thead>
-                      <tr>
-                        <th width="30%">FICHA</th>
-                        <th width="70%">PCVPA-{paciente.id}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td className="text-bold-900">
-                          <b>Nombre</b>
-                        </td>
-                        <td>
-                          {paciente.nombres +
-                            " " +
-                            paciente.apellido_paterno +
-                            " " +
-                            paciente.apellido_materno}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td className="text-bold-500">
-                          <b>RUN</b>
-                        </td>
-                        <td>{paciente.run}</td>
-                      </tr>
-                      <tr>
-                        <td className="text-bold-500">
-                          <b>Dirección</b>
-                        </td>
-                        <td>{paciente.direccion}</td>
-                      </tr>
-                      <tr>
-                        <td className="text-bold-500">
-                          <b>Telefono</b>
-                        </td>
-                        <td>{paciente.fono}</td>
-                      </tr>
-                      <tr>
-                        <td className="text-bold-500">
-                          <b>Email</b>
-                        </td>
-                        <td>{paciente.email}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div
-                className="tab-pane fade"
-                id="v-consulta"
-                role="tabpanel"
-                aria-labelledby="v-consulta">
-                <div
-                  className="tab-pane fade show active"
-                  id="v-consulta"
-                  role="tabpanel"
-                  aria-labelledby="v-consulta">
-                  <div className="table-responsive">
-                    <table className="table table-borderless table-light mb-0">
-                      <thead>
-                        <tr>
-                          <th width="30%"></th>
-                          <th width="70%"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td className="text-bold-900">
-                            <b>Especialidad</b>
-                          </td>
-                          <td>{paciente.profesion}</td>
-                        </tr>
-                        <tr>
-                          <td className="text-bold-900">
-                            <b>Motivo de consulta</b>
-                          </td>
-                          <td>{paciente.motivo_consulta}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="tab-pane fade"
                 id="v-visitas"
                 role="tabpanel"
                 aria-labelledby="visitas">
@@ -212,6 +113,14 @@ const VistaPaciente = () => {
                           <small>
                             visita de <b>{element.nombre_profesion}</b>
                           </small>
+                          <button
+                            type="button"
+                            className="btn rounded-pill btn-outline-warning"
+                            data-bs-toggle="modal"
+                            data-bs-target="#seguimiento-modal">
+                            {" "}
+                            Registrar Visita
+                          </button>
                         </div>
                         <p className="mb-1">{element.descripcion}</p>
                         <small className={`badge bg-light-info`}>
@@ -262,12 +171,59 @@ const VistaPaciente = () => {
           type="reset"
           className="btn btn-secondary me-1 mb-1"
           data-bs-dismiss="modal"
-          onClick={() => limpiaForm()}>
+          onClick={() => volver()}>
           volver
         </button>
       </div>
+
+      <Modal ModalTitle="Seguimiento de visitas" modalId="seguimiento-modal">
+        <form className="form" onSubmit={handleOnSubmit}>
+          <div className="row">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="form-group mb-6">
+                <InputText
+                  type="datetime-local"
+                  id="start"
+                  label="Fecha y Hora de visita"
+                  placeholder="Hora de visita"
+                  name="start"
+                  required={true}
+                  onChangeFN={() => {}}
+                />
+              </div>
+              <div className="form-group mb-6">
+                <Checkbox
+                  id="activo"
+                  name="activo"
+                  label=" Visita realizada"
+                  onChangeFN={() => {}}
+                  value={true}
+                />
+              </div>
+            </div>
+          </div>
+          <br />
+          <div className="form-group col-md-12 col-12">
+            <div className="form-group mb-3">
+              <label className="form-label">Comentario de la visita</label>
+              <textarea
+                className="form-control"
+                id="descripcion"
+                name="descripcion"
+                rows="3"
+                onChange={() => {}}
+                value={paciente.descripcion}></textarea>
+            </div>
+          </div>
+          <div className="row">
+            <div className="modal-footer col-12 d-flex justify-content-end">
+              <Buttons cancelFN={() => limpiaForm()} />
+            </div>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
 
-export default VistaPaciente;
+export default SeguimientoPaciente;

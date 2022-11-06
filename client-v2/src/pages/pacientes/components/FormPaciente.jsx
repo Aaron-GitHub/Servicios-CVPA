@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Buttons, InputText } from "../../../components";
 import { PacienteContext } from "../context/pacienteContext";
 import SelectProfesion from "../../../components/selects/SelectProfesion";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const FormPaciente = () => {
   const {
@@ -25,11 +25,11 @@ const FormPaciente = () => {
       direccion: "",
       motivo_consulta: "",
       id_profesional_evaulador: 0,
+      activo: false,
     };
   }, []);
 
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const [paciente, setPaciente] = useState(pacienteDefault);
 

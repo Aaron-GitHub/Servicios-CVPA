@@ -1,5 +1,5 @@
 import React from "react";
-import { FaRegEdit, FaEye } from "react-icons/fa";
+import { FaRegEdit, FaEye, FaHouseUser } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
 
 const OpcionesTabla = ({
@@ -7,6 +7,8 @@ const OpcionesTabla = ({
   FnEditar,
   ver,
   FnVer,
+  seguimiento,
+  FnSeguimiento,
   eliminar,
   FnEliminar,
   nombreform,
@@ -35,6 +37,17 @@ const OpcionesTabla = ({
           data-bs-toggle="modal"
           data-bs-target={`#${nombreform}-modal`}>
           <FaEye />
+        </button>
+      )}
+
+      {seguimiento && (
+        <button
+          type="button"
+          onClick={() => FnSeguimiento()}
+          className={`${buttonStyle} btn-warning`}
+          data-bs-toggle="modal"
+          data-bs-target={`#${nombreform}-modal`}>
+          <FaHouseUser />
         </button>
       )}
 
